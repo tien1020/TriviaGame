@@ -13,12 +13,12 @@ var questionAndAnswers = [{
        Question: "What is the world's longest river?",
       answerArray: ["1. Amazon", "2. Nile", "3. Mekong", "4. Missouri"],
        rightAnswer: "1. Amazon",
-       animateImage: ,
+       animateImage: "https://media3.giphy.com/media/pYvP6Bf0Uhtm0/200w.webp?cid=790b76115ce7298e785a396d7364905b&rid=200w.webp" ,
 },{
        Question: "What is the diameter of Earth?",
       answerArray: ["1. 12.000 miles ", "2. 10.000 miles", "3. 8.000 miles", "4. 15.000 miles"],
        rightAnswer: "3. 8000 miles",
-       animateImage: ,
+       animateImage: "https://media3.giphy.com/media/pYvP6Bf0Uhtm0/200w.webp?cid=790b76115ce7298e785a396d7364905b&rid=200w.webp" ,
 }, {
        Question: "May Queen, Wisley Crab, Foxwhelps and Lane's Prince Albert are all species of what?",
        answerArray: ["1. Oranges", "2. Apples", "3. Pinnapples", "4. Strawberries"],
@@ -27,60 +27,39 @@ var questionAndAnswers = [{
 
 ]
 
-setTimeout(thirtyseconds,1000*30);
+setTimeout(seconds,1000*30);
 
-//  Interval Demonstration
-    //  Set our number counter to 100.
-    var number = 100;
-
-    //  Variable that will hold our interval ID when we execute
-    //  the "run" function
+    var numberSeconds = 30;
     var intervalId;
 
-    //  When the stop button gets clicked, run the stop function.
-    $("#stop").on("click", stop);
+    $("#btn").on("click", start);
 
-    //  When the resume button gets clicked, execute the run function.
-    $("#resume").on("click", run);
-
-    //  The run function sets an interval
-    //  that runs the decrement function once a second.
-    //  *****BUG FIX******** 
-    //  Clearing the intervalId prior to setting our new intervalId will not allow multiple instances.
-    function run() {
+    
+    function start() {
       clearInterval(intervalId);
       intervalId = setInterval(decrement, 1000);
     }
-
-    //  The decrement function.
     function decrement() {
-
-      //  Decrease number by one.
       number--;
-
-      //  Show the number in the #show-number tag.
       $("#show-number").html("<h2>" + number + "</h2>");
-
-
-      //  Once number hits zero...
       if (number === 0) {
-
-        //  ...run the stop function.
         stop();
-
-        //  Alert the user that time is up.
         alert("Time Up!");
       }
     }
 
-    //  The stop function
+   
     function stop() {
 
-      //  Clears our intervalId
-      //  We just pass the name of the interval
-      //  to the clearInterval function.
       clearInterval(intervalId);
     }
-
-    //  Execute the run function.
     run();
+
+    function showTrivia(){
+      $("#showQuestion").html(questionAnswers[index].question);
+      for(var i=0; i< questionAnswers[index].answers.length;i++){
+        $("#showPossibleAnswers").append(questionAnswers[index].answers[i]+"<br><br>")
+      }
+    
+    }
+    showTrivia()
