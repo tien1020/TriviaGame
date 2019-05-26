@@ -31,7 +31,6 @@ var questionAnswers = [{
     var numberSeconds = 30;
     var intervalId;
 
-    $("#btn").on("click", start);
 
     
     function timer() {
@@ -48,17 +47,52 @@ var questionAnswers = [{
           submitAnswers();
           displayResults();
         }
+        else if(numberSeconds==0) {
+          stopTimer();
+          stopGame();
+          outOfTime(questionCount)
+          setTimeout(function () {
+              nextQuestion();
+              resetTimer();
+          }, 5000);
+      }
     }
 
     $("#btn").on("click", start);
-
+    function start(){
+    
+     $("#questions").show();
+     $("#submit-button").show();
+     
+      timer();
+      
+      document.getElementById("question").reset();
+  
+    }
 
    
-    function stop() {
-
+    function stopTimer() {
       clearInterval(intervalId);
+     
     }
-    run();
+    start();
+
+    function resetTimer() {
+      numberSeconds = 30;
+      $("#timer").text(numberSeconds);
+      timer();
+  }
+
+  $("#submit-button").on("click", submit);  
+  // what happens when start button is clicked
+function submit(){
+// show questions
+$("#question").hide();
+$("#submit-button").hide();
+submitAnswers();
+displayResults();
+stop();
+}
 
 
 
