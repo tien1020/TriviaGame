@@ -47,22 +47,21 @@ function timer() {
     if (numberSeconds === 0) {
       $("#questions").hide();
       $("#submit-button").hide();
-      stop();
-      submitAnswers();
+      stopTimer();
+      checkAnswer();
       displayResults();
-      
     }
-    // else if (numberSeconds == 0) {
-    //   stopTimer();
-    //   stopGame();
-    //   outOfTime(questionCount)
-    //   setTimeout(function () {
-    //     nextQuestion();
-    //     resetTimer();
-    //   }, 5000);
-    //   return;
+    else if (numberSeconds == 0) {
+      stopTimer();
+      stopGame();
+      outOfTime(questionCount)
+      setTimeout(function () {
+        nextQuestion();
+        resetTimer();
+      }, 5000);
+      return;
 
-    // }
+    }
   }
   
 
@@ -74,9 +73,9 @@ function timer() {
     $("#submit-button").show();
     timeId = setInterval(intervalId, 1000);
     timer();
+    showTrivia();
 
-
-    document.getElementById("questions");
+    
 
   }
 
@@ -89,11 +88,11 @@ function timer() {
 
   }
 
-  function startGame() {
-    gameId = setInterval(nextQuestion, 30000);
-    startTimer();
-    renderQuestion(questionCount);
-  }
+  // function startGame() {
+  //   gameId = setInterval(randomQuestion, 30000);
+  //   startTimer();
+  //   showTrivia();
+  // }
 
   function resetTimer() {
     numberSeconds = 30;
@@ -108,13 +107,15 @@ function timer() {
 
     $("#question").hide();
     $("#submit-button").hide();
-    submitAnswers();
+    
     displayResults();
-    stop();
+    stopTimer();
   }
 
   function displayResults (){
-    $("#results").text("You answered correctly"+ correctAnswers + "questions out of 4");
+    $("#results").text("You answered correctly "+ correctAnswers + "questions out of 4");
+    $("#rightAnswer").text("The right answer is: " + randomQuestion.rightAnswer);
+
   }
 
   function reset (){
@@ -132,10 +133,15 @@ function timer() {
   // newArray[i]=randomQuestion;
 
   function showTrivia() {
-    // $("#question").html(questionAnswers[index].question);
+    $("#question").html(randomQuestion.question);
+
     for (var i = 0; i < randomQuestion.length; i++) {
-      // $("#answers").append(questionAnswers[index].answers[i] + "<br><br>")
+      $("#question").html(randomQuestion.question);
+
+      $("#answers").html(randomQuestion.answers[i] + "<br><br>")
+
     }
+    
     return randomQuestion;
 
     // if (questionCount < questionAnswers.length) {
@@ -148,7 +154,7 @@ function timer() {
     //   stopGame();
     //   console.log("end of array");
     }
-  // showTrivia();
+ 
 
   function setupQuestions(){
     correctAnswers = 0;
@@ -169,16 +175,16 @@ function timer() {
 
     questionImage.src = questionObject.image_src;
 
-    for (var i = 0; i < buttons.length; ++i) {
-        var button = buttons[i];
-        if (i >= questionObject.answers.length) {
-            button.style.display = "none";
-            continue;
-        } else {
-            button.style.display = "inline-block";
-        }
-        button.innerHTML = questionObject.answers[i];
-    }
+    // for (var i = 0; i < buttons.length; ++i) {
+    //     var button = buttons[i];
+    //     if (i >= questionObject.answers.length) {
+    //         button.style.display = "none";
+    //         continue;
+    //     } else {
+    //         button.style.display = "inline-block";
+    //     }
+    //     button.innerHTML = questionObject.answers[i];
+    // }
     resetTimer();
 }
 
@@ -201,16 +207,7 @@ function formatNumber(number) {
   return `${number}`.padStart(2, '0');
 }
 
-function resetTimer() {
-  clearTimerInterval();
-  var timer = document.getElementById("timer");
-  timer.innerHTML = timeStringFromSeconds(numberSeconds);
-  intervalId = setInterval(() => {
-      seconds -= 1;
-      timer.innerHTML = timeStringFromSeconds(numberSeconds);
-      checkTimerEnd(numberSeconds);
-  }, 1000);
-}
+
 
 function endGame() {
   clearTimerInterval();
@@ -226,99 +223,11 @@ function endGame() {
   }
 }
 
-function checkTimerEnd(seconds, intervalHandle) {
-  if (seconds <= 0) {
+function checkTimerEnd(seconds, intervalId) {
+  if (numberSeconds <= 0) {
       clearTimerInterval();
-      ++wrongAnswers;
+      ++incorrectAnswers;
       selectQuestion();
   }
 }
 
-
-
-//   function endOfGame() {
-//     createTimer();
-//     var mainBody = $("#main-body");
-//     var result = "<h1>All done, here is how you did.</h1><h1>Correct Answers: " + correctAnswers + "</h1>";
-//     result += "<h1>Incorrect Answers: " + incorrectAnswers + "</h1><h1>Unanswered: " + unAnswers + "</h1>";
-//     mainBody.append(result);
-//     mainBody.append("<button class='btn btn-primary btn-lg startover' id='startover'>Start Over</button>");
-//     correctAnswers = 0;
-//     incorrectAnswers = 0;
-//     unAnswers = 0;
-//     setTimeout(function () {
-
-//       resetTimer();
-//     }, 5000)
-//     $("#startover").click(startGame);
-//   }
-//   function outOfTime(questionCount) {
-//     unAnswers++;
-//     console.log("unAnswered: " + unAnswers);
-//     createTimer();
-//     var mainBody = $("#mainbody");
-//     var answer = "<p class='result-outoftime'>Out of Time!</p>"
-//     mainBody.append(answer);
-//     var answerIx = arrQuestionObject[questionCount].answerIndex;
-//     var cortAnswer = "<p class='answers'>The Correct Answer was: " + arrQuestionObject[questionCount].answers[answerIx] + "</p>"
-//     mainBody.append(cortAnswer);
-//     renderImage(questionCount);
-//   }
-
-//   function createResult(questionCount, userAnswer) {
-//     if (userAnswer == questionAnswers[questionCount].answerIndex) {
-//       this.correctAnswers++;
-//       console.log("correctAnswer: " + correctAnswers);
-//       createTimer();
-//       var mainBody = $("#mainbody");
-//       var answer = "<p class='result-correct'>Correct!</p>"
-//       mainBody.append(answer);
-//       renderImage(questionCount);
-//     }
-//     else {
-//       this.incorrectAnswers++;
-//       console.log("wrongAnswer: " + this.incorrectAnswers);
-//       createTimer();
-//       var mainBody = $("#mainbody");
-//       var answer = "<p class='result-wrong'>Nope!</p>"
-//       mainBody.append(answer);
-//       var answerIx = questionAnswers[questionCount].answerIndex;
-//       var cortAnswer = "<p class='answers'>The Correct Answer was: " + arrQuestionObject[questionCount].answers[answerIx] + "</p>"
-//       mainBody.append(cortAnswer);
-//       renderImage(questionCount);
-//     }
-//     setTimeout(function () {
-//       nextQuestion();
-//       resetTimer();
-//     }, 5000)
-//   }
-
-//   // function createTimer() {
-//   //   var mainBody = $("#mainbody");
-//   //   mainBody.html("");
-//   //   mainBody.addClass("mainbody");
-//   //   mainBody.html("<h3>Time Remaining: <span id='timer'></span> Seconds</h3>")
-//   //   $("#timer").text(numberSeconds);
-//   // }
-//   function createQuestion(questionId) {
-//     var mainBody = $("#mainbody");
-//     var question = "<h4 class='question'>" + questionAnswers[questionId].title + "</h4>"
-//     mainBody.append(question)
-//   }
-//   function createAnswers(questionId) {
-//     var mainBody = $("#mainbody");
-//     var answer = "<div class='btn-group-vertical'><button class='btn btn-default answers' value='0'>" + questionAnswers[questionId].answers[0] + "</button><button  class='btn btn-default answers' value='1'>" + questionAnswers[questionId].answers[1] + "</button><button  class='btn btn-default answers' value='2'>" + questionAnswers[questionId].answers[2] + "</button><button  class='btn btn-default answers' value='3'>" + questionAnswers[questionId].answers[3] + "</button></div>";
-//     mainBody.append(answer);
-//   }
-//   function renderQuestion(questionCount) {
-//     createTimer();
-//     createQuestion(questionCount);
-//     createAnswers(questionCount);
-//     $(".answers").on("click", function () {
-//       var answer = $(this).attr("value");
-//       timer.stopTimer();
-//       stopGame();
-//       createResult(questionCount, answer);
-//     });
-//   }
-// };
