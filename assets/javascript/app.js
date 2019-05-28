@@ -15,22 +15,22 @@ var userPick;
 var questionAnswers = [{
   question: "What is the seventh planet from the sun?",
   answers: ["1. Neptune", "2. Mercury", "3. Earth", "4. Uranus"],
-  rightAnswer: "4. Uranus",
+  rightAnswer: answers[3],
 
 }, {
   question: "What is the world's longest river?",
   answers: ["1. Amazon", "2. Nile", "3. Mekong", "4. Missouri"],
-  rightAnswer: "1. Amazon",
+  rightAnswer: answers[0],
   animateImage: "https://media3.giphy.com/media/pYvP6Bf0Uhtm0/200w.webp?cid=790b76115ce7298e785a396d7364905b&rid=200w.webp",
 }, {
   question: "What is the diameter of Earth?",
   answers: ["1. 12.000 miles ", "2. 10.000 miles", "3. 8.000 miles", "4. 15.000 miles"],
-  rightAnswer: "3. 8000 miles",
+  rightAnswer: answers[2],
   animateImage: "https://media3.giphy.com/media/pYvP6Bf0Uhtm0/200w.webp?cid=790b76115ce7298e785a396d7364905b&rid=200w.webp",
 }, {
   question: "May Queen, Wisley Crab, Foxwhelps and Lane's Prince Albert are all species of what?",
   answers: ["1. Oranges", "2. Apples", "3. Pinnapples", "4. Strawberries"],
-  rightAnswer: "2. Apples",
+  rightAnswer: answers[1],
 }];
 
 
@@ -98,14 +98,14 @@ function timer() {
 
   $("#submit-button").on("click", submit);
 
-  function submit() {
+  // function submit() {
 
-    $("#question").hide();
-    $("#submit-button").hide();
+  //   $("#question").hide();
+  //   $("#submit-button").hide();
     
-    displayResults();
-    stopTimer();
-  }
+  //   displayResults();
+  //   stopTimer();
+  // }
 
   function displayResults (){
     $("#results").text("You answered correctly "+ correctAnswers + " questions out of 4");
@@ -113,11 +113,13 @@ function timer() {
 
   }
 
-  function reset (){
-  correctAnswers = 0;
+  function resetGame (){
   $("#questions").hide();
   $("#submit-button").hide();
   $("#results").hide();
+  // resetTimer();
+  // startTimer();
+  // showTrivia();
   }
 
 
@@ -151,6 +153,12 @@ function timer() {
    correctAnswers++;
    
    }
+   $("#question").hide();
+    $("#submit-button").hide();
+    
+    displayResults();
+    stopTimer();
+
     
   })
 }
@@ -182,25 +190,17 @@ function timer() {
     if (++currentQuestion >= playQuestions.length) {
         endGame();
         return;
-    }
+    // }
 
-    var questionObject = playQuestions[currentQuestion];
-    question.innerHTML = questionObject.question;
+    // var questionObject = playQuestions[currentQuestion];
+    // question.innerHTML = questionObject.question;
 
-    questionImage.src = questionObject.image_src;
+    // questionImage.src = questionObject.image_src;
 
-    for (var i = 0; i < buttons.length; ++i) {
-        var button = buttons[i];
-        if (i >= questionObject.answers.length) {
-            button.style.display = "none";
-            continue;
-        } else {
-            button.style.display = "inline-block";
-        }
-        button.innerHTML = questionObject.answers[i];
-    }
-    resetTimer();
+   
+    // resetTimer();
 }
+  }
 
 function checkAnswer(chosenIndex) {
   var correctIndex = playQuestions[currentQuestion].correct_index;
