@@ -9,6 +9,7 @@ var numberSeconds = 30;
 var intervalId;
 var playQuestions;
 var currentQuestion;
+var userPick;
 
 
 var questionAnswers = [{
@@ -55,6 +56,7 @@ function timer() {
       stopTimer();
       stopGame();
       outOfTime(questionCount)
+      displayResults();
       setTimeout(function () {
         nextQuestion();
         resetTimer();
@@ -75,8 +77,6 @@ function timer() {
     timer();
     showTrivia();
 
-    
-
   }
 
 
@@ -88,11 +88,6 @@ function timer() {
 
   }
 
-  // function startGame() {
-  //   gameId = setInterval(randomQuestion, 30000);
-  //   startTimer();
-  //   showTrivia();
-  // }
 
   function resetTimer() {
     numberSeconds = 30;
@@ -113,8 +108,8 @@ function timer() {
   }
 
   function displayResults (){
-    $("#results").text("You answered correctly "+ correctAnswers + "questions out of 4");
-    $("#rightAnswer").text("The right answer is: " + randomQuestion.rightAnswer);
+    $("#results").text("You answered correctly "+ correctAnswers + " questions out of 4");
+    $("#rightAnswer").text("The correct answer is: " + randomQuestion.rightAnswer);
 
   }
 
@@ -130,19 +125,37 @@ function timer() {
   // var newArray = array.slice();
   var randomQuestion = questionAnswers[randomIndex];
   console.log(randomQuestion);
-  // newArray[i]=randomQuestion;
 
   function showTrivia() {
     $("#question").html(randomQuestion.question);
+      var answerArr = randomQuestion.answers;
+      var buttonsArr = [];
 
-    for (var i = 0; i < randomQuestion.length; i++) {
-      $("#question").html(randomQuestion.question);
-
-      $("#answers").html(randomQuestion.answers[i] + "<br><br>")
-
-    }
+  for (i = 0; i < randomQuestion.answers.length; i++) {
+    var button = $('<button>');
+    button.text(answerArr[i]);
+    button.attr('data-id', i);
+    $('#answers').append(button);
+   }
+   $('#answers').on('click', 'button', function(e){
+    userPick = $(this).data("id");
+    randomQuestion.answers;
+    if(userPick != randomQuestion.rightAnswer) {
+   
+    $('#answers').text("Wrong Answer!");
+    incorrectAnswers++;
+   
+   }
+    else if (userPick === randomQuestion.rightAnswer) {
+   $('#answers').text("Correct!!!");
+   correctAnswers++;
+   
+   }
     
-    return randomQuestion;
+  })
+}
+    
+    // return randomQuestion;
 
     // if (questionCount < questionAnswers.length) {
     //   renderQuestion(questionCount);
@@ -153,8 +166,9 @@ function timer() {
     //   stopTimer();
     //   stopGame();
     //   console.log("end of array");
-    }
- 
+  
+  
+  
 
   function setupQuestions(){
     correctAnswers = 0;
@@ -175,16 +189,16 @@ function timer() {
 
     questionImage.src = questionObject.image_src;
 
-    // for (var i = 0; i < buttons.length; ++i) {
-    //     var button = buttons[i];
-    //     if (i >= questionObject.answers.length) {
-    //         button.style.display = "none";
-    //         continue;
-    //     } else {
-    //         button.style.display = "inline-block";
-    //     }
-    //     button.innerHTML = questionObject.answers[i];
-    // }
+    for (var i = 0; i < buttons.length; ++i) {
+        var button = buttons[i];
+        if (i >= questionObject.answers.length) {
+            button.style.display = "none";
+            continue;
+        } else {
+            button.style.display = "inline-block";
+        }
+        button.innerHTML = questionObject.answers[i];
+    }
     resetTimer();
 }
 
@@ -192,7 +206,8 @@ function checkAnswer(chosenIndex) {
   var correctIndex = playQuestions[currentQuestion].correct_index;
   if (chosenIndex === correctIndex) {
       ++correctAnswers;
-  } else {
+  } 
+  else {
       ++wrongAnswers;
   }
   selectQuestion();
@@ -223,7 +238,7 @@ function endGame() {
   }
 }
 
-function checkTimerEnd(seconds, intervalId) {
+function checkTimerEnd(numberSeconds, intervalId) {
   if (numberSeconds <= 0) {
       clearTimerInterval();
       ++incorrectAnswers;
