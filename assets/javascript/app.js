@@ -96,7 +96,7 @@ function timer() {
   }
 
 
-  $("#submit-button").on("click", submit);
+  
 
   // function submit() {
 
@@ -123,17 +123,22 @@ function timer() {
   }
 
 
-  var randomIndex = Math.floor(Math.random()*questionAnswers.length); 
-  // var newArray = array.slice();
-  var randomQuestion = questionAnswers[randomIndex];
-  console.log(randomQuestion);
+  
+  // var indexQuestion = questionAnswer
+  // console.log(indexQuestion);
+
 
   function showTrivia() {
-    $("#question").html(randomQuestion.question);
-      var answerArr = randomQuestion.answers;
+    $("#question").html(questionAnswers[index].question);
+    for(var i=0; i< questionAnswers[index].answers.length;i++){
+      // $("#answers").append(questionAnswers[index].answers[i]+"<br><br>")
+    }
+    
+ 
+      var answerArr = questionAnswers.answers;
       var buttonsArr = [];
 
-  for (i = 0; i < randomQuestion.answers.length; i++) {
+  for (i = 0; i < questionAnswers.answers.length; i++) {
     var button = $('<button>');
     button.text(answerArr[i]);
     button.attr('data-id', i);
@@ -141,14 +146,14 @@ function timer() {
    }
    $('#answers').on('click', 'button', function(e){
     userPick = $(this).data("id");
-    randomQuestion.answers;
-    if(userPick != randomQuestion.rightAnswer) {
+    questionAnswers.answers;
+    if(userPick != questionAnswers.rightAnswer) {
    
     $('#answers').text("Wrong Answer!");
     incorrectAnswers++;
    
    }
-    else if (userPick === randomQuestion.rightAnswer) {
+    else if (userPick === questionAnswers.rightAnswer) {
    $('#answers').text("Correct!!!");
    correctAnswers++;
    
@@ -158,39 +163,35 @@ function timer() {
     
     displayResults();
     stopTimer();
+    return questionAnswers;
 
     
   })
 }
-    
-    // return randomQuestion;
-
-    // if (questionCount < questionAnswers.length) {
-    //   renderQuestion(questionCount);
-    // }
-    // else {
-    //   questionCount = 0;
-    //   endOfGame();
-    //   stopTimer();
-    //   stopGame();
-    //   console.log("end of array");
-  
-  
-  
-
-  function setupQuestions(){
-    correctAnswers = 0;
-    incorrectAnswers = 0;
-    playQuestions = showTrivia(question);
-    currentQuestion = -1;
-    selectQuestion();
+}
   }
+// $("#next-question").on("click", nextQuestion);
+// function nextQuestion() {
+//   currentQuestion (); 
+//     nextQuestion = setInterval(currentQuestion, 1000 * 30);
 
-  function selectQuestion() {
-    if (++currentQuestion >= playQuestions.length) {
-        endGame();
-        return;
-    // }
+// }
+    
+ 
+  
+  //   function currentQuestion(){
+  //     randomQuestion++;
+  //     // updateScore();
+  //     showTrivia (); 
+  // }
+  
+
+
+  // function selectQuestion() {
+  //   if (++currentQuestion >= playQuestions.length) {
+  //       endGame();
+  //       return;
+  //   // }
 
     // var questionObject = playQuestions[currentQuestion];
     // question.innerHTML = questionObject.question;
@@ -199,9 +200,8 @@ function timer() {
 
    
     // resetTimer();
-}
-  }
 
+  
 function checkAnswer(chosenIndex) {
   var correctIndex = playQuestions[currentQuestion].correct_index;
   if (chosenIndex === correctIndex) {
@@ -213,36 +213,10 @@ function checkAnswer(chosenIndex) {
   selectQuestion();
 }
 
-// timer section
-function timeStringFromSeconds(seconds) {
-  return `${formatNumber(seconds)}`;
-}
-
-function formatNumber(number) {
-  return `${number}`.padStart(2, '0');
-}
 
 
 
-function endGame() {
-  clearTimerInterval();
-  game.style.display = "none";
-  endPage.style.display = "block";
-  var percentage = Math.floor(correctAnswers / playQuestions.length * 100);
-  if (percentage < 50) {
-      stats.innerText = `Unfortunately you got ${percentage}% correct. Try again!`;
-  } else if (percentage > 50 && percentage < 100) {
-      stats.innerText = `Great job! You got ${percentage}% correct. Play again to win!`;
-  } else {
-      stats.innerText = `Perfect score! No one knows the girls better than you.`;
-  }
-}
 
-function checkTimerEnd(numberSeconds, intervalId) {
-  if (numberSeconds <= 0) {
-      clearTimerInterval();
-      ++incorrectAnswers;
-      selectQuestion();
-  }
-}
+
+
 
