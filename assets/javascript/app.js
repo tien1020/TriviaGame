@@ -98,18 +98,10 @@ function timer() {
 
   
 
-  // function submit() {
-
-  //   $("#question").hide();
-  //   $("#submit-button").hide();
-    
-  //   displayResults();
-  //   stopTimer();
-  // }
 
   function displayResults (){
     $("#results").text("You answered correctly "+ correctAnswers + " questions out of 4");
-    $("#rightAnswer").text("The correct answer is: " + randomQuestion.rightAnswer);
+    $("#rightAnswer").text("The correct answer is: " + questionAnswers.rightAnswer);
 
   }
 
@@ -131,20 +123,22 @@ function timer() {
   function showTrivia() {
     $("#question").html(questionAnswers[index].question);
     for(var i=0; i< questionAnswers[index].answers.length;i++){
-      // $("#answers").append(questionAnswers[index].answers[i]+"<br><br>")
+      $("#answers").append(questionAnswers[index].answers[i]+"<br><br>")
     }
     
+    
  
-      var answerArr = questionAnswers.answers;
-      var buttonsArr = [];
+  //     var answerArr = questionAnswers.answers;
+  //     var buttonsArr = [];
 
-  for (i = 0; i < questionAnswers.answers.length; i++) {
-    var button = $('<button>');
-    button.text(answerArr[i]);
-    button.attr('data-id', i);
-    $('#answers').append(button);
-   }
-   $('#answers').on('click', 'button', function(e){
+  // for (i = 0; i < questionAnswers.answers.length; i++) {
+  //   var button = $('<button>');
+  //   button.text(answerArr[i]);
+  //   button.attr('data-id', i);
+  //   $('#answers').append(button);
+  //  }
+   $('#answers').on('click', function {
+   
     userPick = $(this).data("id");
     questionAnswers.answers;
     if(userPick != questionAnswers.rightAnswer) {
@@ -165,11 +159,11 @@ function timer() {
     stopTimer();
     return questionAnswers;
 
-    
-  })
-}
-}
   }
+  
+);
+
+  
 // $("#next-question").on("click", nextQuestion);
 // function nextQuestion() {
 //   currentQuestion (); 
@@ -202,16 +196,7 @@ function timer() {
     // resetTimer();
 
   
-function checkAnswer(chosenIndex) {
-  var correctIndex = playQuestions[currentQuestion].correct_index;
-  if (chosenIndex === correctIndex) {
-      ++correctAnswers;
-  } 
-  else {
-      ++wrongAnswers;
-  }
-  selectQuestion();
-}
+
 
 
 
