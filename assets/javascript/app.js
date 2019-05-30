@@ -50,7 +50,6 @@ function decrement() {
     $("#questions").hide();
     $("#submit-button").hide();
     stopTimer();
-    checkAnswer();
     displayResults();
   }
   else if (numberSeconds == 0) {
@@ -102,13 +101,12 @@ function resetTimer() {
 
 function displayResults() {
   $("#results").text("You answered correctly " + correctAnswers + " questions out of 4");
-  $("#rightAnswer").text("The correct answer is: " + questionAnswers[index].rightAnswer);
+  $("#rightAnswer").text("The correct answer is: " + rightAnswer);
 
 }
 
 function resetGame() {
   $("#questions").hide();
-  $("#submit-button").hide();
   $("#results").hide();
   resetTimer();
 
@@ -134,50 +132,42 @@ function showTrivia() {
   for (var i = 0; i < questionAnswers[index].answers.length; i++) {
     var newDiv = $("<div>");
     newDiv.html(questionAnswers[index].answers[i]);
-    newDiv.attr("data-index",i);
-    newDiv.attr("data-right-answer",questionAnswers[index].rightAnswer);
+    newDiv.attr("dataIndex",i);
+    newDiv.attr("dataRightAnswer",questionAnswers[index].rightAnswer);
     newDiv.addClass("option");
     $("#answers").append(newDiv);
   }
 }
+  
 
 
 
-
-
-//     var answerArr = questionAnswers.answers;
-//     var buttonsArr = [];
-
-// for (i = 0; i < questionAnswers.answers.length; i++) {
-//   var button = $('<button>');
-//   button.text(answerArr[i]);
-//   button.attr('data-id', i);
-//   $('#answers').append(button);
-//  }
-
-
-$('#answers').on('click',".option", function () {
+$("#answers").on("click",".option", function () {
 console.log(this);
-  userPick = newDiv;
-  if (data-index != data-right-answer) {
 
-    $('#answers').text("Wrong Answer!");
+userPick = $(this).data("dataIndex");
+
+questionAnswers[index].rightAnswer;
+
+  if ($("dataIndex").val() != $("dataRightAnswer").val()) {
+
+    $("#answers").text("Wrong Answer!");
     incorrectAnswers++;
 
   }
-  else if (data-index === data-right-answer) {
-    $('#answers').text("Correct!!!");
+  else if ($("dataIndex").val() === $("dataRightAnswer").val()) {
+    $("#answers").text("Correct!!!");
     correctAnswers++;
 
   }
   $("#question").hide();
-  $("#submit-button").hide();
-
   displayResults();
   stopTimer();
+  resetGame();
+
   return questionAnswers;
 
-})
+});
 
 
 
