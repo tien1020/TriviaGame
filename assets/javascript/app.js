@@ -15,7 +15,8 @@ var userPick;
 var questionAnswers = [{
   question: "What is the seventh planet from the sun?",
   answers: ["1. Neptune", "2. Mercury", "3. Earth", "4. Uranus"],
-  rightAnswer: 3,
+  rightAnswer: "4. Uranus",
+
 
 }, {
   question: "What is the world's longest river?",
@@ -71,10 +72,10 @@ $("#start-button").on("click", startTimer);
 function startTimer() {
 
 
-  $("#questions").show();
-  $("#submit-button").show();
+  // $("#questions").show();
   timeId = setInterval(intervalId, 1000);
   timer();
+  resetGame();
   showTrivia();
 
 }
@@ -100,9 +101,10 @@ function resetTimer() {
 
 
 function displayResults() {
-  $("#results").text("You answered correctly " + correctAnswers + " questions out of 4");
-  $("#rightAnswer").text("The correct answer is: " + rightAnswer);
 
+  $("#results").text("You answered correctly " + correctAnswers + " questions out of 4");
+  $("#rightAnswer").text("The correct answer is: " + questionAnswers[index].rightAnswer);
+console.log("this should be the answer:", rightAnswer);
 }
 
 function resetGame() {
@@ -137,29 +139,37 @@ function showTrivia() {
     newDiv.addClass("option");
     $("#answers").append(newDiv);
   }
-}
-  
 
 
 
-$("#answers").on("click",".option", function () {
+
+
+$("#answers").on("click",".option", function (e) {
+
+
+
+var userPick = $(this).attr("dataIndex");
 console.log(this);
-
-userPick = $(this).data("dataIndex");
 
 questionAnswers[index].rightAnswer;
 
-  if ($("dataIndex").val() != $("dataRightAnswer").val()) {
+  // if ($("dataIndex").val() != questionAnswers[index].rightAnswer) {
+  //   $("#answers").text("Wrong Answer!");
+  //   incorrectAnswers++;
 
-    $("#answers").text("Wrong Answer!");
-    incorrectAnswers++;
-
-  }
-  else if ($("dataIndex").val() === $("dataRightAnswer").val()) {
+  // }
+  // else 
+  if (userPick === questionAnswers[index].rightAnswer) {
+    console.log("I am here");
     $("#answers").text("Correct!!!");
     correctAnswers++;
 
   }
+  else {
+    $("#answers").text("Wrong Answer!");
+    incorrectAnswers++;
+  }
+  console.log("here?" +$("dataIndex").val());
   $("#question").hide();
   displayResults();
   stopTimer();
@@ -168,44 +178,13 @@ questionAnswers[index].rightAnswer;
   return questionAnswers;
 
 });
+}
 
 
 
 
 
 
-
-
-// $("#next-question").on("click", nextQuestion);
-// function nextQuestion() {
-//   currentQuestion (); 
-//     nextQuestion = setInterval(currentQuestion, 1000 * 30);
-
-// }
-
-
-
-  //   function currentQuestion(){
-  //     randomQuestion++;
-  //     // updateScore();
-  //     showTrivia (); 
-  // }
-
-
-
-  // function selectQuestion() {
-  //   if (++currentQuestion >= playQuestions.length) {
-  //       endGame();
-  //       return;
-  //   // }
-
-    // var questionObject = playQuestions[currentQuestion];
-    // question.innerHTML = questionObject.question;
-
-    // questionImage.src = questionObject.image_src;
-
-
-    // resetTimer();
 
 
 
