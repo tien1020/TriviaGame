@@ -15,7 +15,7 @@ var userPick;
 var questionAnswers = [{
   question: "What is the seventh planet from the sun?",
   answers: ["1. Neptune", "2. Mercury", "3. Earth", "4. Uranus"],
-  rightAnswer: "4. Uranus",
+  rightAnswer: 3,
 
 
 }, {
@@ -75,7 +75,6 @@ function startTimer() {
   // $("#questions").show();
   timeId = setInterval(intervalId, 1000);
   timer();
-  resetGame();
   showTrivia();
 
 }
@@ -84,9 +83,13 @@ function startTimer() {
 
 function stopTimer() {
   clearInterval(intervalId);
-  $("#questions").hide();
-
+  resetTimer();
+  if(questionCount < questionAnswers.length - 1) {
+      setTimeout(startTimer, 2000);
+      setTimeout(showTrivia, 3000);
+  }
 }
+resetTimer();
 
 
 function resetTimer() {
@@ -94,6 +97,12 @@ function resetTimer() {
   $("#timer").text(numberSeconds);
   timer();
   
+}
+
+function startGame() {
+  gameId = setInterval(nextQuestion, 30000);
+  startTimer();
+  showTrivia(questionCount);
 }
 
 
@@ -107,26 +116,60 @@ function displayResults() {
 console.log("this should be the answer:", rightAnswer);
 }
 
-function resetGame() {
-  $("#questions").hide();
-  $("#results").hide();
-  resetTimer();
+// function resetGame() {
+//   $("#questions").empty();
+//   $("#results").empty();
+//   $("#rightAnswer").empty();
+//   stopTimer();
+//   resetTimer();
+
+// }
+
+
+
+
+
+//function answeredCorrectly() {
+//   correctAnswer++
+//   say "you got it right"
+
+//   if currentQUestion=== questionAnswers.length -1
+//   setTimeout()
+//   continue to next question
+// }
+//   else currentQUestion=== questionAnswers.length
+// display end results
+
+
+
+// function answeredIncorrectly(){
+  // incorrectAnswers++
+  // say "wrong"
+  // if currentQUestion=== questionAnswers.length -1
+  //   setTimeout()
+  //   continue to next question
+//   else currentQUestion=== questionAnswers.length
+// display end results
+
+// }
+
+function nextQuestion() {
+    
+  questionCount++;
+  if (questionCount < questionAnswers.length) {
+      showTrivia(questionCount);
+  }
+  else {
+      questionCount = 0;
+      endOfGame();
+      stopTimer();
+      stopGame();
+      console.log("end of array");
+  }
 
 }
 
 
-
-// var indexQuestion = questionAnswer
-// console.log(indexQuestion);
-
-
-// $("#submit-button").on("click", submit);
-
-// function submit() {
-//   $("#question").hide();
-//   $("#submit-button").hide();
-//   displayResults();
-// }
 
 function showTrivia() {
   $("#question").html(questionAnswers[index].question);
@@ -138,8 +181,13 @@ function showTrivia() {
     newDiv.attr("dataRightAnswer",questionAnswers[index].rightAnswer);
     newDiv.addClass("option");
     $("#answers").append(newDiv);
-  }
+    // timer();
+    // stopTimer();
+    // startGame();
+    // createResult(questionCount, newDiv);
 
+  }
+}
 
 
 
@@ -148,38 +196,48 @@ $("#answers").on("click",".option", function (e) {
 
 
 
-var userPick = $(this).attr("dataIndex");
-console.log(this);
-
-questionAnswers[index].rightAnswer;
-
-  // if ($("dataIndex").val() != questionAnswers[index].rightAnswer) {
-  //   $("#answers").text("Wrong Answer!");
-  //   incorrectAnswers++;
-
-  // }
-  // else 
-  if (userPick === questionAnswers[index].rightAnswer) {
-    console.log("I am here");
-    $("#answers").text("Correct!!!");
+  if ($(this).attr('dataindex') === $(this).attr('datarightanswer')) {
+    console.log('index',$(this).attr('dataindex'));
+        $("#answers").text("Correct!!!");
+        displayResults();
+        stopTimer();
     correctAnswers++;
-
+    questionCount++;
   }
   else {
     $("#answers").text("Wrong Answer!");
+    displayResults();
+    stopTimer();
     incorrectAnswers++;
-  }
-  console.log("here?" +$("dataIndex").val());
-  $("#question").hide();
-  displayResults();
-  stopTimer();
-  resetGame();
+    questionCount++;
 
-  return questionAnswers;
+  }
+//   setTimeout(function () {
+//     nextQuestion();
+//     timer.resetTimer();
+// }, 5000)
+ 
+checkGameEnd();
 
 });
-}
 
+function checkGameEnd() {
+  if(questionCount === questionAnswers.length) {
+      $("timer").hide();
+      displayResults();
+      questionCount = 0;
+
+          resetResults();
+          startGame();
+      }
+  }
+
+
+function resetResults() {
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+  unanswered = 0;
+}
 
 
 
