@@ -5,7 +5,7 @@ var unAnswered = 0;
 // var index = 0;
 var questionCount = 0;
 var timeId;
-var numberSeconds = 30;
+var numberSeconds = 10;
 var intervalId;
 var playQuestions;
 var currentQuestion;
@@ -49,23 +49,17 @@ function decrement() {
   $("#timer").html("<h2>" + numberSeconds + "seconds left</h2>");
   if (numberSeconds === 0) {
     $("#questions").hide();
+    unAnswered++;
+    questionCount++;
     stopTimer();
-    // increment unanswered questions 
-    // wait
-    // get a new question
+    $("#answers").text(" Out of Times - Unanswers: " + unAnswered);
     displayResults();
     setTimeout(function () {
       nextQuestion();
       resetTimer();
     }, 5000);
   }
-  // else if (numberSeconds == 0) {
-  //   stopTimer();
-    
-   
-    
 
-  // }
 }
 
 
@@ -75,9 +69,12 @@ function startGame() {
   questionCount =0;
   resetTimer();
 correctAnswers =0;
+incorrectAnswers =0;
+$("#endGame").empty();
+$("#results").empty();
+$("#rightAnswer").empty();
   timer();
   showTrivia();
-  // gameId = setInterval(nextQuestion, 40000);
 
 }
 
@@ -85,26 +82,18 @@ correctAnswers =0;
 
 function stopTimer() {
   clearInterval(intervalId);
-  // resetTimer();
-  // if(questionCount < questionAnswers.length - 1) {
-      // setTimeout(startGame, 5000);
-      // setTimeout(showTrivia, 5000);
+
   }
 
-// resetTimer();
 
 
 function resetTimer() {
-  numberSeconds = 30;
+  numberSeconds = 10;
   timer();
   
 }
 
-// function startGame() {
-//   gameId = setInterval(nextQuestion, 40000);
-//   startTimer();
-//   showTrivia();
-// }
+
 
 
 
@@ -113,7 +102,9 @@ function resetTimer() {
 function displayResults() {
 
   $("#results").text("You answered correctly " + correctAnswers + " questions out of 4");
+  // $("#wrongAnswer").text("You answered incorrectly " + incorrectAnswers + " questions out of 4");
   $("#rightAnswer").text("The correct answer is: " + questionAnswers[questionCount].answers[questionAnswers[questionCount].rightAnswer]);
+ 
 console.log("this should be the answer:", rightAnswer);
 }
 
@@ -139,8 +130,9 @@ function nextQuestion() {
   }
   else {
       questionCount = 0;
-      // endOfGame();
       stopTimer();
+      $("#endGame").text("End Game!")
+
       console.log("end of array");
   }
 
@@ -171,25 +163,29 @@ $("#answers").on("click",".option", function (e) {
 
   if ($(this).attr('dataindex') === $(this).attr('datarightanswer')) {
     console.log('index',$(this).attr('dataindex'));
-        $("#answers").text("Correct!!!");
+        $("#answers").append("Correct!!!");
+        $("#answers").prepend('<img src="https://media.giphy.com/media/lnlAifQdenMxW/giphy.gif"/>');
+
         correctAnswers++;
         displayResults();
         stopTimer();
-    
     questionCount++;
   }
+
+
   else {
-    $("#answers").text("Wrong Answer!");
+    $("#answers").append("Wrong Answer!");
+    $("#answers").prepend('<img src="https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif"/>');
+
     incorrectAnswers++;
     displayResults();
     stopTimer();
-    
+    console.log("the third");
     questionCount++;
 
   }
 
- setTimeout(nextQuestion, 5000);
-// checkGameEnd();
+ setTimeout(nextQuestion, 3000);
 
 });
 
