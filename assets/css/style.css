@@ -13,3 +13,17 @@ body {
     text-align: center;
     background-color: pink;
 }
+.option:hover{
+color: #BD5D38;
+}
+
+@media screen and (max-width: 575px) {
+  
+  
+  
+  .container {
+
+    width: 80%;
+  
+  } 
+}
