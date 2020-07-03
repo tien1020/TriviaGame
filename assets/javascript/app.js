@@ -70,6 +70,7 @@ function startGame() {
   resetTimer();
 correctAnswers =0;
 incorrectAnswers =0;
+unAnswered = 0;
 $("#endGame").empty();
 $("#results").empty();
 $("#rightAnswer").empty();
